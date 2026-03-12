@@ -67,3 +67,25 @@ docker run --name paperclip \
 ```
 
 Without API keys, the app runs normally — adapter environment checks will surface missing prerequisites.
+
+## Troubleshooting Workspace Resolution Failures
+
+If Docker build fails in the `deps` stage with an error like:
+
+```text
+ERR_PNPM_WORKSPACE_PKG_NOT_FOUND
+```
+
+it usually means a `workspace:*` dependency points at a package that is missing from the Docker build context or no longer exists in the workspace.
+
+Recommended checks:
+
+```sh
+pnpm check:workspace-deploy
+```
+
+```sh
+docker build --target deps -t paperclip-deps-preflight .
+```
+
+CI runs both checks in PR and release verification to fail fast before full build/test steps.

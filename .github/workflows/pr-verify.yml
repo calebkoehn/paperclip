@@ -29,6 +29,12 @@ jobs:
           node-version: 20
           cache: pnpm
 
+      - name: Workspace/deploy consistency check
+        run: pnpm check:workspace-deploy
+
+      - name: Docker deps-stage preflight
+        run: docker build --target deps -t paperclip-deps-preflight .
+
       - name: Install dependencies
         run: pnpm install --no-frozen-lockfile
 
